@@ -31,8 +31,6 @@ export function clearPage(){
 export function postForm(data){
     return async () => {
         const post = await axios.post('http://localhost:3001/pokemons', data)
-        console.log(data)
-        console.log(post)
         return post
     }
 }

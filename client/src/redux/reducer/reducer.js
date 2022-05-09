@@ -1,4 +1,4 @@
-import { CLEAR_PAGE, GET_DETAILS, GET_POKEMONS, GET_TYPES, POST_FORM } from "../actions/actionTypes"
+import { CLEAR_PAGE, GET_DETAILS, GET_POKEMONS, GET_TYPES } from "../actions/actionTypes"
 
 const initialState = {
     pokemons: [],

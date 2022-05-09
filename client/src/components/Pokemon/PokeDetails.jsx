@@ -21,17 +21,33 @@ function PokeDetails() {
     <div>
       {
         p.name ?
-        <>
-          <h2>{p.name}</h2>
-          <h5>id: {p.id}</h5>
-          <img src={p.image} alt="" />
-          <h3>Vida: {p.hp}</h3>
-          <h3>Fuerza: {p.attack}</h3>
-          <h3>Defensa: {p.defense}</h3>
-          <h3>Velocidad: {p.speed}</h3>
-          <h3>Altura: {p.height}</h3>
-          <h3>Peso: {p.weight}</h3>
-        </>
+          p.type2 ?
+          <>
+            <h1>{p.name}</h1>
+            <h5>id: {p.id}</h5>
+            <img src={p.image} alt="" />
+            <h3>Vida: {p.hp}</h3>
+            <h3>Fuerza: {p.attack}</h3>
+            <h3>Defensa: {p.defense}</h3>
+            <h3>Velocidad: {p.speed}</h3>
+            <h3>Altura: {p.height}</h3>
+            <h3>Peso: {p.weight}</h3>
+            <h3>Tipo 1: {p.type1}</h3>
+            <h3>Tipo 2: {p.type2}</h3>
+          </>
+          : 
+          <>
+            <h1>{p.name}</h1>
+            <h5>id: {p.id}</h5>
+            <img src={p.image} alt="" />
+            <h3>Vida: {p.hp}</h3>
+            <h3>Fuerza: {p.attack}</h3>
+            <h3>Defensa: {p.defense}</h3>
+            <h3>Velocidad: {p.speed}</h3>
+            <h3>Altura: {p.height}</h3>
+            <h3>Peso: {p.weight}</h3>
+            <h3>Tipo 1: {p.type1}</h3>
+          </>
         :
         <p>Cargando...</p>
       }
