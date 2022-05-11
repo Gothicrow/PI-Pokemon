@@ -255,33 +255,41 @@ router.post('/', async (req,res,next)=>{
         if(!name||!hp||!attack||!defense||!speed||!height||!weight||!image||!type1){
             res.send('Hay un campo invalido.')
         }else{
-            const newPokemon = await Pokemon.create({
-                name,
-                hp,
-                attack,
-                defense,
-                speed,
-                height,
-                weight,
-                image
-            })
-            let type = await Type.findAll({
-                where:{
-                    name: type1
+            const pokeExistente = await Pokemon.findAll({
+                where: {
+                    name: name
                 }
             })
-            await newPokemon.addType(type[0].dataValues.id)
-            if(type2){ 
-                type = await Type.findAll({
+            if(pokeExistente.length>0){
+                res.send('Ya existe un pokemon con ese nombre.')
+            }else{
+                const newPokemon = await Pokemon.create({
+                    name,
+                    hp,
+                    attack,
+                    defense,
+                    speed,
+                    height,
+                    weight,
+                    image
+                })
+                let type = await Type.findAll({
                     where:{
-                        name: type2
+                        name: type1
                     }
                 })
                 await newPokemon.addType(type[0].dataValues.id)
+                if(type2){ 
+                    type = await Type.findAll({
+                        where:{
+                            name: type2
+                        }
+                    })
+                    await newPokemon.addType(type[0].dataValues.id)
+                }
+                res.send('Pokemon creado correctamente.')
             }
-            res.send('Pokemon creado correctamente.')
         }
-        
     }catch(error){
         next(error)
     }

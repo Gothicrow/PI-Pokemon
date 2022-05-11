@@ -1,15 +1,22 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import style from './PokeHome.module.css'
 
 function PokeHome({id,name,image,type1,type2}) {
   return (
-    <div>
-      <img src={image} alt="" />
-        <Link to={`/home/${id}`}>
-          <h2>{name}</h2>
-        </Link>
-        <h4>{type1} {type2}</h4>
-    </div>
+      <div className={style.div} >
+        <img className={style.image} src={image} alt=""/>
+        <h2 className={style.name} >{name}</h2>
+        {
+          type2?
+        <div className={style.types}>
+          <h4 className={style.type}>{type1}</h4>
+          <h4 className={style.type}>{type2}</h4>
+        </div>:
+        <div className={style.types}>
+          <h4 className={style.type}>{type1}</h4>
+        </div>
+        }
+      </div>
   )
 }
 

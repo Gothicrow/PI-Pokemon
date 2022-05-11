@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-function HomeButtom() {
+function HomeButton() {
   return (
     <div>
         <Link to={'/home'}>
@@ -11,4 +11,4 @@ function HomeButtom() {
   )
 }
 
-export default HomeButtom
+export default HomeButton

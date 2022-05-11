@@ -2,7 +2,7 @@ import React, { useEffect, useState} from 'react'
 import {getPokemons, getTypes} from '../../redux/actions/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import PokeHome from '../Pokemon/PokeHome'
-import {Link} from 'react-router-dom'
+import style from './Home.module.css'
 
 function Home() {
 
@@ -12,6 +12,8 @@ function Home() {
   const [orden, setOrden] = useState('A-Z')
   const [tipo, setTipo] = useState('')
   const [origen,setOrigen] = useState('all')
+  const [nombre,setNombre] = useState('')
+  const [search,setSearch] = useState('')
 
   const dispatch = useDispatch()
 
@@ -22,8 +24,8 @@ function Home() {
 
   const allPokemons = useSelector((state)=>state.pokemons)
   useEffect(()=> {
-    dispatch(getPokemons(),console.log(allPokemons))
-  },[dispatch,allPokemons])
+    dispatch(getPokemons())
+  },[dispatch])
 
   let pokeRender = allPokemons
 
@@ -49,12 +51,15 @@ function Home() {
       const type = types.find(tipo=>tipo.name === t)
       if(type){
         setTipo(type.name)
+        setPagina(1)
       }else{
         setTipo('')
+        setPagina(1)
         console.log('no me harcodees.. -.-"')
       }
     }else{
       setTipo('')
+      setPagina(1)
     }
   }
 
@@ -62,14 +67,18 @@ function Home() {
     if(o==='all'||o==='org'||o==='crt'){
       if(o==='org'){
         setOrigen('org')
+        setPagina(1)
       }else if(o==='crt'){
         setOrigen('crt')
+        setPagina(1)
       }else{
         setOrigen('all')
+        setPagina(1)
       }
     }else{
       o='all'
       setOrigen('all')
+      setPagina(1)
       console.log('No me harcodees!! >:(')
     }
   }
@@ -80,7 +89,6 @@ function Home() {
     }else{
       console.log('._.')
     }
-    console.log(pagina)
   }
 
   function filtrado(){
@@ -121,28 +129,65 @@ function Home() {
       paginas.push(cadaPag)
     }
   }
-
+  
   if(pokeRender.length>0){
+    filtroNombre()
     filtrado()
     if(pokeRender.length>0){
       ordenamiento()
     }
     paginado()
   }
+
+  function filtroNombre(){
+    if(pokeRender.length>0){
+      if(search){
+        const pokeFiltro = pokeRender.find(p=>p.name===search)
+        if(pokeFiltro){
+          pokeRender = []
+          pokeRender.push(pokeFiltro)
+        }
+      }
+    }
+  }
+
+  function nameSearch(p){
+    if(/^[a-zA-Z]+$/.test(p)){
+      setNombre(p.toLowerCase())
+    }else{
+      setNombre('')
+      setSearch('')
+    }
+  }
+
+  function handleOnSubmit(e){
+    e.preventDefault()
+
+    setSearch(nombre)
+  }
   
   return (
-    <div>
-      <div>
-        <h1>Pokemon</h1>
-        <input type="text" name="" id="" />
-        <button type="submit">Buscar</button>
-        <Link to={'/create/pokemon'}>
+    <div className={style.home} >
+      <div className={style.main}>
+        <h1 className={style.title}>Pokemon</h1>
+        <form onSubmit={handleOnSubmit}>
+          <input 
+            className={style.input}
+            type="text" 
+            name="nameSearch"
+            placeholder='Buscar pokemon'
+            onChange={(e)=>nameSearch(e.target.value)} 
+          />
+          <button className={style.search} type="submit">Buscar</button>
+        </form>
+        <a className={style.create} href={'/create/pokemon'}>
           <h2>Crear Pokemon</h2>
-        </Link>
+        </a>
       </div>
-      <div>
-        <h3>Filtrar por tipo: </h3>
-        <select key='types' name="types" onChange={(t)=>selectType(t.target.value)}>
+      <div className={style.filtros}>
+        <div className={style.filtro}>
+        <h3 className={style.h3}>Filtrar por tipo: </h3>
+        <select className={style.select} key='types' name="types" onChange={(t)=>selectType(t.target.value)}>
           <option value=''>Seleccionar el Tipo</option>
           {
             types.map(t=>(
@@ -150,51 +195,57 @@ function Home() {
             ))
           }
         </select>
-        <h3>Filtrar por origen: </h3>
-        <select key='origen' name="origen" onChange={(o)=>selectOrigen(o.target.value)} >
-          <option value="all">Todos</option>
-          <option value="org">Original</option>
-          <option value="crt">Creado</option>
-        </select>
-        <h3>Filtrar por orden:</h3>
-        <select key='orden' name="orden" onChange={(o)=>selectOrden(o.target.value)} >
+        </div>
+        <div className={style.filtro}>
+          <h3 className={style.h3}>Filtrar por origen: </h3>
+          <select className={style.select} key='origen' name="origen" onChange={(o)=>selectOrigen(o.target.value)} >
+            <option value="all">Todos</option>
+            <option value="org">Original</option>
+            <option value="crt">Creado</option>
+          </select>
+        </div>
+        <div className={style.filtro}>
+        <h3 className={style.h3}>Filtrar por orden:</h3>
+        <select className={style.select} key='orden' name="orden" onChange={(o)=>selectOrden(o.target.value)} >
           <option value="A-Z">A-Z</option>
           <option value="Z-A">Z-A</option>
           <option value="strong">Mas fuerte</option>
           <option value="weak">Mas debil</option>
         </select>
+        </div>
       </div>
-      <div>
-        <div>
-          {
-            paginas.length>0?
-            paginas.map(p=>{
-              return (
-                <button 
-                  key={`${p.page}`} 
-                  value={p.page+1}
-                  onClick={(n)=>selectPage(n.target.value)}>
-                </button>
-              )
-              
-            })
-            :
-            console.log('mal')
-          }
-        </div>
-        <div>
-          {
-            paginas.length>0?
-            paginas[pagina-1].pokes.map(p=>(
-              <PokeHome key={p.id} id={p.id} name={p.name} image={p.image} type1={p.type1} type2={p.type2}/>
-            ))
-            :
-            allPokemons.length>0?
-            <p>No hay pokemons disponibles.</p>:
-            <p>Cargando...</p>
-          }
-        </div>
-        
+      <div className={style.paginas}>
+        {
+          paginas.length>0?
+          paginas.map(p=>{
+            return (
+              <button 
+                className={style.botonPag}
+                key={`${p.page}`} 
+                value={p.page+1}
+                onClick={(n)=>selectPage(n.target.value)}>
+              {`${p.page+1}`}</button>
+            )
+          })
+          :
+          console.log('Cargando pokemons.')
+        }
+      </div>
+      <div className={style.pokes}>
+        {
+          paginas.length>0?
+          paginas[pagina-1].pokes.map(p=>(
+            <div key={p.id}>
+              <a className={style.pokemon} href={`/home/${p.id}`}>
+                <PokeHome id={p.id} name={p.name} image={p.image} type1={p.type1} type2={p.type2}/>
+              </a>
+            </div>
+          ))
+          :
+          allPokemons.length>0?
+          <p className={style.msj}>No hay pokemons disponibles.</p>:
+          <p className={style.msj}>Cargando...</p>
+        }
       </div>
     </div>
   )

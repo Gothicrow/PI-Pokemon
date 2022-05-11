@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getTypes, postForm } from '../../redux/actions/actions'
+import style from './Form.module.css'
 
 function Form() {
 
@@ -24,9 +26,10 @@ function Form() {
   const [error,setError] = useState('')
 
   const [disabled, setDisabled] = useState(true)
+  const [resp,setResp] = useState('')
 
   useEffect(()=>{
-    if(name && hp && attack && defense && speed && height && weight && image && type1 && !error){
+    if(name && hp>0 && attack>0 && defense>0 && speed>0 && height>0 && weight>0 && image && type1 && !error){
       setDisabled(false)
     }else{
       setDisabled(true)
@@ -37,63 +40,63 @@ function Form() {
     if(!/^[a-zA-Z]+$/.test(name)){
       setError('El nombre solo debe contener letras.')
     }else{
+      setName(name)
       setError('')
     }
-    setName(name)
   }
 
   function validateHp(hp){
     if(!/^[0-9]+$/.test(hp)){
       setError('La vida solo debe contener numeros.')
     }else{
+      setHp(hp)
       setError('')
     }
-    setHp(hp)
   }
 
   function validateAttack(attack){
     if(!/^[0-9]+$/.test(attack)){
       setError('El ataque solo debe contener numeros.')
     }else{
+      setAttack(attack)
       setError('')
     }
-    setAttack(attack)
   }
 
   function validateDefense(defense){
     if(!/^[0-9]+$/.test(defense)){
       setError('La defensa solo debe contener numeros.')
     }else{
+      setDefense(defense)
       setError('')
     }
-    setDefense(defense)
   }
 
   function validateSpeed(speed){
     if(!/^[0-9]+$/.test(speed)){
       setError('La velocidad solo debe contener numeros.')
     }else{
+      setSpeed(speed)
       setError('')
     }
-    setSpeed(speed)
   }
 
   function validateHeight(height){
     if(!/^[0-9]+$/.test(height)){
       setError('La altura solo debe contener numeros.')
     }else{
+      setHeight(height)
       setError('')
     }
-    setHeight(height)
   }
 
   function validateWeight(weight){
     if(!/^[0-9]+$/.test(weight)){
       setError('El peso solo debe contener numeros.')
     }else{
+      setWeight(weight)
       setError('')
     }
-    setWeight(weight)
   }
 
   function validateImage(image){
@@ -110,14 +113,11 @@ function Form() {
     if(!esTipo){
       setError('Debes seleccionar un tipo valido')
     }else{
+      setType1(type1)
       setError('')
     }
-    setType1(type1)
   }
 
-  if(type2){
-    
-  }
   function validateType2(type2){
     if(type2===''){
       setType2(type2)
@@ -126,9 +126,9 @@ function Form() {
       if(!esTipo){
         setError('Debes seleccionar un tipo valido')
       }else{
+        setType2(type2)
         setError('')
       }
-      setType2(type2)
     }
     
   }
@@ -138,7 +138,7 @@ function Form() {
     if(name && hp && attack && defense && speed && height && weight && image && type1 && !error){
       if(type2.length>0){
         const newPokemon ={
-          name: name,
+          name: name.toLowerCase(),
           hp: hp,
           attack: attack,
           defense: defense,
@@ -150,9 +150,10 @@ function Form() {
           type2: type2
         }
         dispatch(postForm(newPokemon))
+        .then(res=>setResp(res.data))
       }else{
         const newPokemon ={
-          name: name,
+          name: name.toLowerCase(),
           hp: hp,
           attack: attack,
           defense: defense,
@@ -163,20 +164,37 @@ function Form() {
           type1: type1
         }
         dispatch(postForm(newPokemon))
+        .then(res=>setResp(res.data))
       }
     }else{
       alert('Debes completar todos los campos obligatorios')
     }
   }
 
+  function volver(e){
+    e.preventDefault()
+    window.history.back()
+  }
+
+
   return (
-    <div>
-    {
-      types.length>0?
-      <form onSubmit={handleOnSubmit}>
-          <label>
+    <div className={style.main}>
+      {resp?
+      <div className={style.button}>
+        <a className={style.return} href='/home'>Volver</a>
+      </div>
+      :
+      <div className={style.button}>
+        <Link className={style.return} type="button" onClick={e=>volver(e)} to='' >Volver</Link>
+      </div>
+      }
+      {types.length>0?
+      <form className={style.form} onSubmit={handleOnSubmit}>
+        <div className={style.div}>
+          <label className={style.label}>
             Nombre: 
             <input 
+            className={style.input}
             key='name'
             type="text" 
             name="name" 
@@ -186,10 +204,12 @@ function Form() {
             required
             />
           </label>
-        <br/>
-          <label>
+        </div>
+        <div className={style.div}>
+          <label className={style.label}>
             Vida: 
             <input 
+            className={style.input}
             key='hp'
             type="number" 
             name="hp" 
@@ -201,9 +221,10 @@ function Form() {
             />
           </label>
         <br/>
-          <label>
+          <label className={style.label}>
             Fuerza: 
             <input 
+            className={style.input}
             key='attack'
             type="number" 
             name="attack" 
@@ -215,9 +236,10 @@ function Form() {
             />
           </label>
         <br/>
-          <label>
+          <label className={style.label}>
             Defensa: 
             <input 
+            className={style.input}
             key='defense'
             type="number" 
             name="defense" 
@@ -228,10 +250,12 @@ function Form() {
             required
             />
           </label>
-        <br/>
-          <label>
+        </div>
+        <div className={style.div}>
+          <label className={style.label}>
             Velocidad: 
             <input 
+            className={style.input}
             key='speed'
             type="number" 
             name="speed" 
@@ -243,9 +267,10 @@ function Form() {
             />
           </label>
         <br/>
-          <label>
+          <label className={style.label}>
             Altura: 
             <input 
+            className={style.input}
             key='height'
             type="number" 
             name="height" 
@@ -257,9 +282,10 @@ function Form() {
             />
           </label>
         <br/>
-          <label>
+          <label className={style.label}>
             Peso: 
             <input 
+            className={style.input}
             key='weight'
             type="number" 
             name="weight" 
@@ -270,10 +296,12 @@ function Form() {
             required
             />
           </label>
-        <br/>
-          <label>
+        </div>
+        <div className={style.div}>
+          <label className={style.label}>
             Imagen: 
             <input 
+            className={style.input}
             key='image'
             type="text" 
             name="image" 
@@ -284,8 +312,9 @@ function Form() {
             required
             />
           </label>
-        <br/>
-          <label>
+        </div>
+        <div className={style.divType}>
+          <label className={style.label}>
             Tipo 1: 
             <select key='type1' name="type1" id="" onChange={(e)=>validateType1(e.target.value)} required>
               <option value=''>Seleccionar el Tipo</option>
@@ -297,7 +326,7 @@ function Form() {
             </select>
           </label>
         <br/>
-          <label>
+          <label className={style.label}>
             Tipo 2: 
             <select key='type2' name="type2" id="" onChange={(e)=>validateType2(e.target.value)}>
                 <option value=''>Seleccionar el tipo</option>
@@ -308,13 +337,25 @@ function Form() {
               }
             </select>
           </label>
-        <br/>
-        <button disabled={disabled} type="submit">Enviar</button>
+        </div>
+        {
+          resp.length>0?
+          <div className={style.res}>
+            <h2 className={style.h2}>{resp}</h2>
+            <div className={style.options}>
+              <a className={style.create} href='/create/pokemon' >
+                Crear otro pokemon
+              </a>
+              <a className={style.toHome} href='/home'>
+                Volver a Home.
+              </a>
+            </div>
+          </div>:
+          <button className={style.boton} disabled={disabled} type="submit">Enviar</button>
+        }
       </form>
       :
-      <p>Cargando...</p>
-    }
-      
+      <p>Cargando...</p>}
     </div>
   )
 }

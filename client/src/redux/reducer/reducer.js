@@ -1,12 +1,13 @@
-import { CLEAR_PAGE, GET_DETAILS, GET_POKEMONS, GET_TYPES } from "../actions/actionTypes"
+import { CLEAR_PAGE, GET_DETAILS, GET_POKEMONS, GET_TYPES, SEARCH_NAME } from "../actions/actionTypes"
 
 const initialState = {
+    pokeDetalles: [],
     pokemons: [],
     types: [],
-    pokeDetalles: {}
 }
 
 export default function reducer(state = initialState, {type, payload}){
+    console.log(state)
     switch(type){
         case GET_POKEMONS: return {
             ...state,
@@ -18,11 +19,15 @@ export default function reducer(state = initialState, {type, payload}){
         }
         case CLEAR_PAGE: return{
             ...state,
-            pokeDetalles: {}
+            pokeDetalles: []
         }
         case GET_TYPES: return{
             ...state,
             types: payload
+        }
+        case SEARCH_NAME: return{
+            ...state,
+            pokeDetalles: payload
         }
         default: return state
     }

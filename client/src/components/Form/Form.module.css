@@ -1,0 +1,106 @@
+.main{
+    position: relative;
+    display:flex;
+    flex-direction: column;
+    margin: 25px 10% 0px 10%;
+}
+
+.button{
+    margin: 10px;
+}
+
+.return{
+    position: relative;
+    float: left;
+    margin: 5px 0px 0px 10px;
+    text-decoration: none;
+    font-size: 30px;
+    color: black;
+}
+
+.form{
+    position: relative;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: linear-gradient(0deg, rgb(101, 255, 127), rgb(0, 238, 255));
+    box-shadow: 4px 5px 15px 6px rgba(0,0,0,0.61);
+    -webkit-box-shadow: 4px 5px 15px 6px rgba(0,0,0,0.61);
+    -moz-box-shadow: 4px 5px 15px 6px rgba(0,0,0,0.61);
+}
+
+.div{
+    position: relative;
+    height: 12%;
+    width: 90%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.divType{
+    position: relative;
+    height: 12%;
+    width: 90%;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.label{
+    position: relative;
+    height: 80%;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.boton{
+    height: 40px;
+    width: 80px;
+    border-radius: 5px;
+    background: radial-gradient(rgb(212, 255, 156),rgb(101, 255, 183));
+}
+
+.res{
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.options{
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.h2{
+    font-size: 30px;
+}
+
+.create{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+.toHome{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+.input{
+    border: solid;
+    background: radial-gradient(rgb(229, 255, 195),rgb(183, 255, 220));
+}
