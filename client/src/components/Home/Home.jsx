@@ -3,6 +3,7 @@ import {getPokemons, getTypes} from '../../redux/actions/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import PokeHome from '../Pokemon/PokeHome'
 import style from './Home.module.css'
+import { Link } from 'react-router-dom'
 
 function Home() {
 
@@ -24,8 +25,8 @@ function Home() {
 
   const allPokemons = useSelector((state)=>state.pokemons)
   useEffect(()=> {
-    dispatch(getPokemons())
-  },[dispatch])
+    dispatch(getPokemons(orden))
+  },[dispatch,orden])
 
   let pokeRender = allPokemons
 
@@ -104,18 +105,6 @@ function Home() {
     }
   }
 
-  function ordenamiento(){
-    if(orden==='A-Z'){
-      pokeRender = pokeRender.sort((a,b)=>a.name.localeCompare(b.name))
-    }else if(orden==='Z-A'){
-      pokeRender = pokeRender.sort((a,b)=>b.name.localeCompare(a.name))
-    }else if(orden==='strong'){
-      pokeRender = pokeRender.sort((a,b)=>b.attack-a.attack)
-    }else if(orden==='weak'){
-      pokeRender = pokeRender.sort((a,b)=>a.attack-b.attack)
-    }
-  }
-
   function paginado(){
     let cantPages = Math.ceil(pokeRender.length/12)
     let inicio = 0
@@ -133,9 +122,6 @@ function Home() {
   if(pokeRender.length>0){
     filtroNombre()
     filtrado()
-    if(pokeRender.length>0){
-      ordenamiento()
-    }
     paginado()
   }
 
@@ -180,9 +166,9 @@ function Home() {
           />
           <button className={style.search} type="submit">Buscar</button>
         </form>
-        <a className={style.create} href={'/create/pokemon'}>
+        <Link className={style.create} to={'/create/pokemon'}>
           <h2>Crear Pokemon</h2>
-        </a>
+        </Link>
       </div>
       <div className={style.filtros}>
         <div className={style.filtro}>
@@ -236,9 +222,9 @@ function Home() {
           paginas.length>0?
           paginas[pagina-1].pokes.map(p=>(
             <div key={p.id}>
-              <a className={style.pokemon} href={`/home/${p.id}`}>
+              <Link className={style.pokemon} to={`/home/${p.id}`}>
                 <PokeHome id={p.id} name={p.name} image={p.image} type1={p.type1} type2={p.type2}/>
-              </a>
+              </Link>
             </div>
           ))
           :

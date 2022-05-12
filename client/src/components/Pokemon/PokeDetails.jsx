@@ -18,11 +18,6 @@ function PokeDetails() {
     }
   },[dispatch,id])
 
-  function volver(e){
-    e.preventDefault()
-    window.history.back()
-  }
-
   return (
     <div className={style.main}>
       {
@@ -36,7 +31,7 @@ function PokeDetails() {
             </div>
             <div className={style.der}>
               <div className={style.button}>
-                <Link className={style.return} type="button" onClick={e=>volver(e)} to='' >x</Link>
+                <Link className={style.return} to='/home'>x</Link>
               </div>
               <div className={style.stats}>
                 <div className={style.stat}>
@@ -65,7 +60,7 @@ function PokeDetails() {
             </div>
             <div className={style.der}>
               <div className={style.button}>
-                <Link className={style.return} type="button" onClick={e=>volver(e)} to=''>x</Link>
+                <Link className={style.return} to='/home'>x</Link>
               </div>
               <div className={style.stats}>
                 <div className={style.stat}>

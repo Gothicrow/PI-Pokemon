@@ -171,23 +171,12 @@ function Form() {
     }
   }
 
-  function volver(e){
-    e.preventDefault()
-    window.history.back()
-  }
-
 
   return (
     <div className={style.main}>
-      {resp?
       <div className={style.button}>
-        <a className={style.return} href='/home'>Volver</a>
+        <Link className={style.return} to='/home'>Volver</Link>
       </div>
-      :
-      <div className={style.button}>
-        <Link className={style.return} type="button" onClick={e=>volver(e)} to='' >Volver</Link>
-      </div>
-      }
       {types.length>0?
       <form className={style.form} onSubmit={handleOnSubmit}>
         <div className={style.div}>
@@ -343,12 +332,8 @@ function Form() {
           <div className={style.res}>
             <h2 className={style.h2}>{resp}</h2>
             <div className={style.options}>
-              <a className={style.create} href='/create/pokemon' >
-                Crear otro pokemon
-              </a>
-              <a className={style.toHome} href='/home'>
-                Volver a Home.
-              </a>
+              <Link className={style.create} to='/create/pokemon'>Crear otro pokemon</Link>
+              <Link className={style.toHome} to='/home'>Volver a Home</Link>
             </div>
           </div>:
           <button className={style.boton} disabled={disabled} type="submit">Enviar</button>
