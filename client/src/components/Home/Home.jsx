@@ -46,6 +46,7 @@ function Home() {
       console.log('Deja de harcodearme :c')
     }
   }
+  
 
   function selectType(t){
     if(t!==''){
@@ -93,30 +94,35 @@ function Home() {
   }
 
   function filtrado(){
-    if(origen!=='all'){
-      if(origen==='org'){
-        pokeRender = pokeRender.filter(p=>p.id<15000)
-      }else if(origen==='crt'){
-        pokeRender = pokeRender.filter(p=>!(p.id<15000))
+    if(pokeRender.length>0){
+      if(origen!=='all'){
+        if(origen==='org'){
+          pokeRender = pokeRender.filter(p=>p.id<15000)
+        }else if(origen==='crt'){
+          pokeRender = pokeRender.filter(p=>!(p.id<15000))
+        }
       }
-    }
-    if(tipo!==''){
-      pokeRender = pokeRender.filter(p=>p.type2?p.type2===tipo||p.type1===tipo:p.type1===tipo)
+      if(tipo!==''){
+        pokeRender = pokeRender.filter(p=>p.type2?p.type2===tipo||p.type1===tipo:p.type1===tipo)
+      }
     }
   }
 
   function paginado(){
-    let cantPages = Math.ceil(pokeRender.length/12)
-    let inicio = 0
-    for(let i=0;i<cantPages;i++){
-      let cadaPag = 
-      {
-        page: i,
-        pokes: pokeRender.slice(inicio,inicio+12)
+    if(pokeRender.length>0){
+      let cantPages = Math.ceil(pokeRender.length/12)
+      let inicio = 0
+      for(let i=0;i<cantPages;i++){
+        let cadaPag = 
+        {
+          page: i,
+          pokes: pokeRender.slice(inicio,inicio+12)
+        }
+        inicio = inicio+12
+        paginas.push(cadaPag)
       }
-      inicio = inicio+12
-      paginas.push(cadaPag)
     }
+    
   }
   
   if(pokeRender.length>0){
@@ -127,11 +133,13 @@ function Home() {
 
   function filtroNombre(){
     if(pokeRender.length>0){
-      if(search){
+      if(search.length>0){
         const pokeFiltro = pokeRender.find(p=>p.name===search)
         if(pokeFiltro){
           pokeRender = []
           pokeRender.push(pokeFiltro)
+        }else{
+          pokeRender = []
         }
       }
     }
@@ -150,6 +158,9 @@ function Home() {
     e.preventDefault()
 
     setSearch(nombre)
+    if(!nombre){
+      alert('Debes ingresar un nombre valido!')
+    }
   }
   
   return (
@@ -167,7 +178,7 @@ function Home() {
           <button className={style.search} type="submit">Buscar</button>
         </form>
         <Link className={style.create} to={'/create/pokemon'}>
-          <h2>Crear Pokemon</h2>
+          <h2 className={style.createh2}>Crear Pokemon</h2>
         </Link>
       </div>
       <div className={style.filtros}>
@@ -219,18 +230,22 @@ function Home() {
       </div>
       <div className={style.pokes}>
         {
-          paginas.length>0?
-          paginas[pagina-1].pokes.map(p=>(
-            <div key={p.id}>
-              <Link className={style.pokemon} to={`/home/${p.id}`}>
-                <PokeHome id={p.id} name={p.name} image={p.image} type1={p.type1} type2={p.type2}/>
-              </Link>
-            </div>
-          ))
+          pokeRender.length>0?
+            paginas.length>0?
+              paginas[pagina-1].pokes.map(p=>(
+                <div key={p.id}>
+                  <Link className={style.pokemon} to={`/home/${p.id}`}>
+                    <PokeHome id={p.id} name={p.name} image={p.image} type1={p.type1} type2={p.type2}/>
+                  </Link>
+                </div>
+              ))
+            :
+              pokeRender.length>0?
+              <p className={style.msj}>No hay pokemons disponibles.</p>
+              :
+              <p className={style.msj}>Cargando...</p>
           :
-          allPokemons.length>0?
-          <p className={style.msj}>No hay pokemons disponibles.</p>:
-          <p className={style.msj}>Cargando...</p>
+          <p className={style.msj}>No hay pokemons disponibles.</p>
         }
       </div>
     </div>

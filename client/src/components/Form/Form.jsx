@@ -39,6 +39,9 @@ function Form() {
   function validateName(name){
     if(!/^[a-zA-Z]+$/.test(name)){
       setError('El nombre solo debe contener letras.')
+      if(name===''){
+        setName('')
+      }
     }else{
       setName(name)
       setError('')
@@ -112,6 +115,7 @@ function Form() {
     const esTipo = types.find(t=>t.name===type1)
     if(!esTipo){
       setError('Debes seleccionar un tipo valido')
+      setType1('')
     }else{
       setType1(type1)
       setError('')
@@ -125,12 +129,30 @@ function Form() {
       const esTipo = types.find(t=>t.name===type2)
       if(!esTipo){
         setError('Debes seleccionar un tipo valido')
+        setType2('')
       }else{
         setType2(type2)
         setError('')
       }
     }
     
+  }
+
+  function reset(e){
+    e.preventDefault()
+    setName('')
+    setHp(0)
+    setAttack(0)
+    setDefense(0)
+    setSpeed(0)
+    setHeight(0)
+    setWeight(0)
+    setImage('')
+    setType1('')
+    setType2('')
+    setError('')
+    setDisabled(true)
+    setResp('')
   }
 
   function handleOnSubmit(e){
@@ -332,7 +354,7 @@ function Form() {
           <div className={style.res}>
             <h2 className={style.h2}>{resp}</h2>
             <div className={style.options}>
-              <Link className={style.create} to='/create/pokemon'>Crear otro pokemon</Link>
+              <Link className={style.create} onClick={e=>reset(e)} to=''>Crear otro pokemon</Link>
               <Link className={style.toHome} to='/home'>Volver a Home</Link>
             </div>
           </div>:

@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export function getPokemons(orden){
     return async dispatch => {
-        const pokemones = await axios.get('http://localhost:3001/pokemons')
+        const pokemones = await axios.get('/pokemons')
         let pokemons
         if(orden==='A-Z'){
             pokemons = pokemones.data.sort((a,b)=>a.name.localeCompare(b.name))
@@ -20,14 +20,14 @@ export function getPokemons(orden){
 
 export function getDetails(id){
     return async dispatch => {
-        const details = await axios.get(`http://localhost:3001/pokemons/${id}`)
+        const details = await axios.get(`/pokemons/${id}`)
         return dispatch({type: GET_DETAILS, payload: details.data})
     }
 }
 
 export function getTypes(){
     return async dispatch=> {
-        const types = await axios.get('http://localhost:3001/types')
+        const types = await axios.get('/types')
         return dispatch({type: GET_TYPES, payload: types.data})
     }
 }
@@ -40,14 +40,14 @@ export function clearPage(){
 
 export function postForm(data){
     return async () => {
-        const post = await axios.post('http://localhost:3001/pokemons', data)
+        const post = await axios.post('/pokemons', data)
         return post
     }
 }
 
 export function searchName(nombre){
     return async dispatch => {
-        const search = await axios.get(`http://localhost:3001/pokemons?name=${nombre}`)
+        const search = await axios.get(`/pokemons?name=${nombre}`)
         return dispatch({type: SEARCH_NAME, payload: search.data})
     }
 }
