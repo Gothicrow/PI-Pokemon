@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export function getPokemons(orden){
     return async dispatch => {
-        const pokemones = await axios.get('/pokemons')
+        const pokemones = await axios.get('/pokemon?search=&&order1=id&&order2=asc&&tipo=')
         let pokemons
         if(orden==='A-Z'){
             pokemons = pokemones.data.sort((a,b)=>a.name.localeCompare(b.name))
