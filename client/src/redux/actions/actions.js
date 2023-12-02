@@ -3,16 +3,16 @@ import axios from 'axios'
 
 export function getPokemons(orden){
     return async dispatch => {
-        const pokemones = await axios.get('/pokemon?search=&&order1=id&&order2=asc&&tipo=')[0]
+        const pokemones = await axios.get('/pokemons')
         let pokemons
         if(orden==='A-Z'){
-            pokemons = pokemones.pokes.sort((a,b)=>a.name.localeCompare(b.name))
+            pokemons = pokemones.data.sort((a,b)=>a.name.localeCompare(b.name))
           }else if(orden==='Z-A'){
-            pokemons = pokemones.pokes.sort((a,b)=>b.name.localeCompare(a.name))
+            pokemons = pokemones.data.sort((a,b)=>b.name.localeCompare(a.name))
           }else if(orden==='strong'){
-            pokemons = pokemones.pokes.sort((a,b)=>b.attack-a.attack)
+            pokemons = pokemones.data.sort((a,b)=>b.attack-a.attack)
           }else if(orden==='weak'){
-            pokemons = pokemones.pokes.sort((a,b)=>a.attack-b.attack)
+            pokemons = pokemones.data.sort((a,b)=>a.attack-b.attack)
           }
         return dispatch({type: GET_POKEMONS, payload: pokemons})
     }
